@@ -1,27 +1,38 @@
 // src/state/core.js
 
-// Создаёт хранилище с начальными данными
 export function createStore(initialState) {
-  // здесь создадим внутреннее место для хранения данных
-  // и список подписчиков
+  // внутреннее место, где реально лежат данные
+  let state = initialState;
+
+  // список подписчиков
+  const listeners = [];
 
   return {
-    // вернуть текущее состояние
     getState() {
-      // просто отдаём внутренние данные
+      return state; // просто возвращаем текущее значение
     },
 
-    // обновить состояние
     setState(updater) {
-      // применяем новое значение (или функцию)
-      // сохраняем обновлённые данные
+      // updater может быть значением или функцией
+      const nextState =
+        typeof updater === 'function'
+          ? updater(state)
+          : updater;
+
+      state = nextState; // сохраняем новое состояние
+
       // уведомляем подписчиков
+      listeners.forEach(fn => fn(state));
     },
 
-    // подписаться на изменения
     subscribe(listener) {
-      // добавляем слушателя в список
-      // возвращаем функцию для отписки
+      listeners.push(listener);
+
+      // вернуть отписку
+      return () => {
+        const index = listeners.indexOf(listener);
+        if (index >= 0) listeners.splice(index, 1);
+      };
     }
   };
 }
