@@ -19,6 +19,14 @@ export function createStore(initialState) {
           ? updater(state)
           : updater;
 
+      if (nextState === undefined) {
+        throw new Error('State cannot be undefined');
+      }
+
+      if (nextState === state) {
+        return; // нечего обновлять
+      }
+
       state = nextState; // сохраняем новое состояние
 
       // уведомляем подписчиков
