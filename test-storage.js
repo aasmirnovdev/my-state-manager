@@ -3,8 +3,14 @@ import { createStore } from "./src/state/core.js";
 
 const store = createStore({x: 0});
 
-console.log(store.getState());
+function updateValue() {
+  console.log('Вызвалась функция')
+  console.log(store.getState());
+}
 
-console.log(store.setState(prev => ({...prev, x: prev.x + 1})));
+const unsubscribe = store.subscribe(updateValue);
 
-console.log(store.getState());
+store.setState({x: 1});
+store.setState({x: 2});
+unsubscribe();
+store.setState({x: 3});

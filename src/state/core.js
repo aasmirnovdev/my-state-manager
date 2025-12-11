@@ -22,7 +22,8 @@ export function createStore(initialState) {
       state = nextState; // сохраняем новое состояние
 
       // уведомляем подписчиков
-      listeners.forEach(fn => fn(state));
+      const snapshot = listeners.slice(); // не изменяем массив подписчиков во время обхода
+      snapshot.forEach(fn => fn(state));
     },
 
     subscribe(listener) {
