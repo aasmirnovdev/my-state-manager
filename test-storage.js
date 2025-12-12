@@ -3,10 +3,19 @@ import { createStore } from "./src/state/core.js";
 
 const store = createStore({x: 0, y: 0});
 
+// логирующее middleware
+function logMiddleware(prev, next) {
+  console.log('[state changed]', {
+    prev,
+    next
+  });
+  return next; // обязательно вернуть новое состояние без изменений
+}
+
 function updateValue() {
-  console.log('Вызвалась функция')
   console.log(store.getState());
 }
+store.use(logMiddleware);
 
 const unsubscribe = store.subscribe(updateValue);
 

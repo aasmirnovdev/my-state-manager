@@ -7,6 +7,9 @@ export function createStore(initialState) {
   // список подписчиков
   const listeners = [];
 
+  // список миддлваров
+  const middlewares = [];
+
   return {
     getState() {
       return state; // просто возвращаем текущее значение
@@ -14,10 +17,15 @@ export function createStore(initialState) {
 
     setState(updater) {
       // updater может быть значением или функцией
-      const nextState =
+      let nextState =
         typeof updater === 'function'
           ? updater(state)
           : updater;
+
+           // пропускаем через middleware
+      middlewares.forEach(mw => {
+        nextState = mw(state, nextState);
+      });
 
       if (nextState === undefined) {
         throw new Error('State cannot be undefined');
@@ -42,6 +50,11 @@ export function createStore(initialState) {
         const index = listeners.indexOf(listener);
         if (index >= 0) listeners.splice(index, 1);
       };
+    },
+
+    // регистрация middleware
+    use(mw) {
+      middlewares.push(mw);
     }
   };
 }
