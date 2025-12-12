@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TODO</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <h1>Список задач</h1>
+
+  <!-- ввод новой задачи -->
+  <div class="new-task">
+    <input id="taskInput" type="text" placeholder="Что нужно сделать?" aria-label="Новое задание" />
+    <button id="addBtn" type="button">Добавить</button>
+  </div>
+
+  <!-- контейнер для списка задач -->
+  <ul id="tasks" class="tasks" aria-live="polite">
+    <!-- элементы списка будут добавляться сюда -->
+    <li class="empty">Список пуст — добавьте первую задачу.</li>
+  </ul>
+
+  <script src="./app.js" type="module"></script>
+</body>
+</html>
